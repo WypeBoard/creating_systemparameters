@@ -18,7 +18,6 @@ overrideToUpdateSql = False
 Optional fields, depending on 
     @param includeTypeAndAttribute 
 """
-parameterType = ''
 parameterTypeId = ''
 parameterAttributeId = []
 
