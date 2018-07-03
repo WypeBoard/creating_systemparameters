@@ -5,8 +5,8 @@ import uuid
 """
 Mandatory fields
 """
-inputFile = 'satser.csv'
-outputfile = 'CopyPasteToFile.sql'
+inputFile = ''
+outputfile = ''
 includesHeaderRow = False  # Skips first row
 includesTypeAndAttribute = False  # uses row to create type and attributes
 
@@ -15,9 +15,8 @@ Optional fields, depending on
     @param includeTypeAndAttribute 
 """
 parameterType = ''
-parameterTypeId = '03b17275-c3d0-40de-8d73-5638e7cd2509'
-parameterAttributeId = ['1F65DFDF-1BF7-4D90-B15E-015EE1A2EBA4',
-                        '00644694-4794-4A2A-94CA-D84C317371AA']
+parameterTypeId = ''
+parameterAttributeId = []
 
 
 def new_uuid():
