@@ -5,15 +5,11 @@ import string
 import uuid
 
 """
-Mandatory fields
-"""
-parameterType = 'haendelsestype'
-parameterTypeId = '53a61d18-f1a8-4b77-933b-5f07cbceajef'
-
-"""
 Static fields
 """
-attributesIdInInputFile = True  # False if Attributes ID are listed in parameterAttributeId
+parameterType = ''
+parameterTypeId = ''
+attributesIdAndTypeInInputFile = True  # False if Attributes ID are listed in parameterAttributeId
 outputFile = 'SystemparametersOutput.sql'
 parameterAttributeId = []
 systemparametersInput = 'SystemparametersInput.csv'
@@ -32,11 +28,11 @@ def instance_key(size=6, chars=string.ascii_uppercase + string.digits):
 
 
 def sql_for_instance(id):
-    return 'insert into PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) values (\'' + id + '\',\'' + parameterTypeId + '\',\'' + instance_key() + '\',to_date(\'2018-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
+    return 'INSERT INTO PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + id + '\',\'' + parameterTypeId + '\',\'' + instance_key() + '\',to_date(\'2018-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
 
 
 def sql_for_value(instance_id, attribut_id, value):
-    return 'insert into PARAMETERVAERDI (ID, PARAMETERINSTANS_ID, PARAMETERATTRIBUT_ID, VAERDI, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) values (\'' + new_uuid() + '\',\'' + instance_id + '\',\'' + attribut_id + '\',\'' + replace(
+    return 'INSERT INTO PARAMETERVAERDI (ID, PARAMETERINSTANS_ID, PARAMETERATTRIBUT_ID, VAERDI, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + new_uuid() + '\',\'' + instance_id + '\',\'' + attribut_id + '\',\'' + replace(
         value) + '\',systimestamp, \'STAMDATA\', systimestamp, \'STAMDATA\');\n'
 
 
@@ -63,6 +59,9 @@ def read_file(file_path):
     with open(file_path, 'r', newline='') as file:
         reader = csv.reader(file, delimiter=';', quotechar='|')
         for row in reader:
+            if len(row) == 1:
+                if row[0].find('--') == 0:
+                    continue
             data.append(row)
     return data
 
@@ -92,7 +91,10 @@ if __name__ == '__main__':
     """
     First line defines the Attributes
     """
-    if attributesIdInInputFile:
+    if attributesIdAndTypeInInputFile:
+        typeAndId = data.pop(0)
+        parameterType = typeAndId[0]
+        parameterTypeId = typeAndId[1]
         parameterAttributeId = data.pop(0)
 
     """
