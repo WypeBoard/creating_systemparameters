@@ -15,8 +15,11 @@ def opretTekstnoegle(tekstnogle, tekst):
     query = 'INSERT INTO TEKST (ID,SPROG,TEKSTNOEGLE,TEKST,HJAELPETEKST,BESKRIVELSETEKST,FOERTEKST,EFTERTEKST,PLACEHOLDERTEKST,GENVEJSTAST,OPRETTET,OPRETTETAF,AENDRET,AENDRETAF) ' \
             'SELECT \'' + uuid + '\',\'da\',\'' + tekstnogle + '\',\'' + tekst + '\',\'\',\'\',\'\',\'\',\'\',\'\',systimestamp,\'SYSTEM\',systimestamp,\'SYSTEM\' ' \
                                                                                  'FROM dual WHERE NOT EXISTS (SELECT 1 FROM TEKST WHERE SPROG = \'da\' AND TEKSTNOEGLE = \'' + tekstnogle + '\');\n'
+    update = 'UPDATE TEKST SET TEKST=\'' + tekst + '\' WHERE SPROG=\'da\' AND TEKSTNOEGLE=\'' + tekstnogle + '\';\n'
+
     with open(outputFile, 'a') as file:
         file.write(query)
+        file.write(update)
 
 
 def prep_new_parameters():
@@ -31,4 +34,6 @@ if __name__ == "__main__":
         prep_new_parameters()
         reader = csv.reader(csvFile, delimiter=';', quotechar='|')
         for row in reader:
+            if row[0].find('--') == 0:
+                continue
             opretTekstnoegle(row[0], row[1])
