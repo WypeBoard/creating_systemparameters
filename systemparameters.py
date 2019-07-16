@@ -12,7 +12,7 @@ parameterTypeId = ''
 attributesIdAndTypeInInputFile = True  # False if Attributes ID are listed in parameterAttributeId
 outputFile = 'SystemparametersOutput.sql'
 parameterAttributeId = []
-systemparametersInput = 'input2.csv'
+systemparametersInput = 'SystemparametersInput.csv'
 
 
 def new_uuid():
