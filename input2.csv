@@ -1,0 +1,16 @@
+im_kontoplan;b586cd98-b1cd-4509-a710-9d88bf57a9f3
+5f01256b-ffad-4c25-94c4-8bec6736d700;0c040fac-38a9-42f7-b6ea-5102ece8d7df;78ed4222-186e-4130-b60b-807ac00034e1
+-- Transport
+5.57.71.012;Befordringsgodtgørelse driftkonto for Sygedagpenge modtager i fleksjob;48921d56-866f-48da-8c68-4ffecd08031a
+5.58.80.013;Befordringsgodtgørelse driftkonto for Revalidering;b6f85d24-f2bb-48dd-b65c-cfadc0109b7c
+5.58.81.012;Befordringsgodtgørelse driftkonto for Fleksjobberettiget i fleksjob eller visiteret til fleksjob gammel ordning;c2260001-dd28-4b05-8562-15df487ee191
+5.58.82.007;Befordringsgodtgørelse driftkonto for Ressoruceforløbsydelse;c90afaa1-0838-4456-aed6-ac9f5a86cdf9
+5.58.82.017;Befordringsgodtgørelse driftkonto for Jobafklaringsforløb;3812994b-d555-4656-9df2-fa3849e89193
+5.58.83.002;Befordringsgodtgørelse driftkonto for Fleksjobberettiget visiteret til fleksjob;884a3157-11eb-4eca-a525-f1d014653387
+5.68.98.097;Befordringsgodtgørelse driftkonto for Hjælp til forsørgelse;5a00c554-1060-4a28-a03f-ff4967abfc3d
+-- Merudgift
+5.68.82.007;Merudgiftsgodtgørelse for Ressourceforløbsydelse;da93869a-b7ee-4b9b-9e6d-c13eaa1f0ca9
+5.68.90.100;Merudgiftsgodtgørelse for Jobafklaringsforløb;3aa1c20a-c2cd-4015-9cfc-3f9d6e8d0363
+5.68.98.1.003;Merudgiftsgodtgørelse for Hjælp til forsørgelse;f75ce433-02ee-495a-b4eb-a7801857b4d9
+-- Integration
+5.46.61.005;Godtgørelse for Integrationsydelsesmodtagere;826ba496-fde4-4059-803e-69a86bfc4f68
