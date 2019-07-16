@@ -12,7 +12,7 @@ parameterTypeId = ''
 attributesIdAndTypeInInputFile = True  # False if Attributes ID are listed in parameterAttributeId
 outputFile = 'SystemparametersOutput.sql'
 parameterAttributeId = []
-systemparametersInput = 'SystemparametersInput.csv'
+systemparametersInput = 'input2.csv'
 
 
 def new_uuid():
@@ -27,8 +27,8 @@ def instance_key(size=6, chars=string.ascii_uppercase + string.digits):
     return parameterType + '-' + ''.join(random.choice(chars) for _ in range(size))
 
 
-def sql_for_instance(id):
-    return 'INSERT INTO PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + id + '\',\'' + parameterTypeId + '\',\'' + instance_key() + '\',to_date(\'2018-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
+def sql_for_instance(id, noelge):
+    return 'INSERT INTO PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + id + '\',\'' + parameterTypeId + '\',\'' + noelge + '\',to_date(\'2018-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
 
 
 def sql_for_value(instance_id, attribut_id, value):
@@ -38,11 +38,17 @@ def sql_for_value(instance_id, attribut_id, value):
 
 def create_instance_and_value(line):
     instance_id = new_uuid()
-    data = [sql_for_instance(instance_id)]
-    for index, value in enumerate(line):
-        data.append(sql_for_value(instance_id, parameterAttributeId[index], value))
-    write_file(outputFile, data)
+    parameter = []
+    if len(line) is not len(parameterAttributeId):
+        parameter.append(sql_for_instance(instance_id, line[0]))
+        for index, value in enumerate(line[1:]):
+            parameter.append(sql_for_value(instance_id, parameterAttributeId[index], value))
+    else:
+        parameter.append(sql_for_instance(instance_id, instance_key()))
+        for index, value in enumerate(line):
+            parameter.append(sql_for_value(instance_id, parameterAttributeId[index], value))
 
+    write_file(outputFile, parameter)
 
 def read_file(file_path):
     """
@@ -56,18 +62,20 @@ def read_file(file_path):
         newline (\n) defines new entry
     """
     data = []
-    with open(file_path, 'r', newline='') as file:
+    with open(file_path, 'r', newline='', encoding="utf-8") as file:
         reader = csv.reader(file, delimiter=';', quotechar='|')
         for row in reader:
             if len(row) == 1:
                 if row[0].find('--') == 0:
                     continue
+            if not row:
+                continue
             data.append(row)
     return data
 
 
 def write_file(file_path, data):
-    with open(file_path, 'a') as file:
+    with open(file_path, 'a', encoding="utf8") as file:
         for row in data:
             file.write(row)
 
