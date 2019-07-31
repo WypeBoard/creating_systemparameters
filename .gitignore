@@ -111,6 +111,9 @@ venv.bak/
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/misc.xml
+.idea/modules.xml
+.idea/creating_systemparameters.iml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
