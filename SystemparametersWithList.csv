@@ -8,7 +8,7 @@ CouldThisBeATestWithListParameters;53a61d18-f1a8-4b77-933b-5f07cbceajef
 49d6f5b9-f2ce-4438-9b62-5cb042374444;49d6f5b9-f2ce-4438-9b62-5cb042377406;49d6f5b9-f2ce-4438-9b62-5cb042377407;49d6f5b9-f2ce-4438-9b62-5cb042377408;49d6f5b9-f2ce-4438-9b62-5cb042377409
 -----------------------------
 -- Værdiliste til instance --
------------------------------
+-----------------------------g
 -- Værdier for attributter. Disse bliver mappet i samme rækkefølge som attribut id'erne er indtastet
 Attr1_value1;Attr2_value1;Attr3_value1,Attr3_value2,Attr3_value3,Attr3_value4;Attr4_value1;Attr5_value1
 Attr1_value1;Attr2_value1;Attr3_value1,Attr3_value2;Attr4_value1;Attr5_value1

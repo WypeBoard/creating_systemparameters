@@ -28,7 +28,7 @@ def instance_key(size=6, chars=string.ascii_uppercase + string.digits):
 
 
 def sql_for_instance(id, noelge):
-    return 'INSERT INTO PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + id + '\',\'' + parameterTypeId + '\',\'' + noelge + '\',to_date(\'2018-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
+    return 'INSERT INTO PARAMETERINSTANS (ID, PARAMETERTYPE_ID, NOEGLE, GYLDIG_FRA, OPRETTET, OPRETTETAF, AENDRET, AENDRETAF) VALUES (\'' + id + '\',\'' + parameterTypeId + '\',\'' + noelge + '\',to_date(\'2000-01-01\',\'YYYY-MM-DD\'),systimestamp,\'STAMDATA\',systimestamp,\'STAMDATA\');\n'
 
 
 def sql_for_value(instance_id, attribut_id, value):
@@ -42,10 +42,14 @@ def create_instance_and_value(line):
     if len(line) is not len(parameterAttributeId):
         parameter.append(sql_for_instance(instance_id, line[0]))
         for index, value in enumerate(line[1:]):
+            if not value:
+                continue
             parameter.append(sql_for_value(instance_id, parameterAttributeId[index], value))
     else:
         parameter.append(sql_for_instance(instance_id, instance_key()))
         for index, value in enumerate(line):
+            if not value:
+                continue
             parameter.append(sql_for_value(instance_id, parameterAttributeId[index], value))
 
     write_file(outputFile, parameter)
@@ -65,9 +69,8 @@ def read_file(file_path):
     with open(file_path, 'r', newline='', encoding="utf-8") as file:
         reader = csv.reader(file, delimiter=';', quotechar='|')
         for row in reader:
-            if len(row) == 1:
-                if row[0].find('--') == 0:
-                    continue
+            if row[0].find('--') == 0:
+                continue
             if not row:
                 continue
             data.append(row)

@@ -4,18 +4,25 @@ import uuid
 
 inputFile = 'tekstnogler.csv'
 outputFile = 'tekster.sql'
+forKommuneMigraations = True
 
 
 def new_uuid():
     return str(uuid.uuid4())
 
 
-def opretTekstnoegle(tekstnogle, tekst):
+def opretTekstnoegle(tekstnogle, tekst, accesskey=''):
     uuid = new_uuid()
-    query = 'INSERT INTO TEKST (ID,SPROG,TEKSTNOEGLE,TEKST,HJAELPETEKST,BESKRIVELSETEKST,FOERTEKST,EFTERTEKST,PLACEHOLDERTEKST,GENVEJSTAST,OPRETTET,OPRETTETAF,AENDRET,AENDRETAF) ' \
-            'SELECT \'' + uuid + '\',\'da\',\'' + tekstnogle + '\',\'' + tekst + '\',\'\',\'\',\'\',\'\',\'\',\'\',systimestamp,\'SYSTEM\',systimestamp,\'SYSTEM\' ' \
-                                                                                 'FROM dual WHERE NOT EXISTS (SELECT 1 FROM TEKST WHERE SPROG = \'da\' AND TEKSTNOEGLE = \'' + tekstnogle + '\');\n'
-    update = 'UPDATE TEKST SET TEKST=\'' + tekst + '\' WHERE SPROG=\'da\' AND TEKSTNOEGLE=\'' + tekstnogle + '\';\n'
+    add_kommune = ''
+    arguments = ''
+    if forKommuneMigraations:
+        add_kommune = 'KY_0756.'
+    if accesskey:
+        arguments = ', GENVEJSTAST=\'' + accesskey + '\''
+    query = 'INSERT INTO ' + add_kommune + 'TEKST (ID,SPROG,TEKSTNOEGLE,TEKST,HJAELPETEKST,BESKRIVELSETEKST,FOERTEKST,EFTERTEKST,PLACEHOLDERTEKST,GENVEJSTAST,OPRETTET,OPRETTETAF,AENDRET,AENDRETAF) ' \
+                                           'SELECT \'' + uuid + '\',\'da\',\'' + tekstnogle + '\',\'' + tekst + '\',\'\',\'\',\'\',\'\',\'\',\'' + accesskey + '\',systimestamp,\'SYSTEM\',systimestamp,\'SYSTEM\' ' \
+                                                                                                                                                               'FROM dual WHERE NOT EXISTS (SELECT 1 FROM ' + add_kommune + 'TEKST WHERE SPROG = \'da\' AND TEKSTNOEGLE = \'' + tekstnogle + '\');\n'
+    update = 'UPDATE ' + add_kommune + 'TEKST SET TEKST=\'' + tekst + '\'' + arguments + ' WHERE SPROG=\'da\' AND TEKSTNOEGLE=\'' + tekstnogle + '\';\n'
 
     with open(outputFile, 'a') as file:
         file.write(query)
@@ -34,6 +41,11 @@ if __name__ == "__main__":
         prep_new_parameters()
         reader = csv.reader(csvFile, delimiter=';', quotechar='|')
         for row in reader:
+            if not row:
+                continue
             if row[0].find('--') == 0:
                 continue
-            opretTekstnoegle(row[0], row[1])
+            if len(row) == 2:
+                opretTekstnoegle(row[0], row[1])
+            elif len(row) == 3:
+                opretTekstnoegle(row[0], row[1], row[2])
